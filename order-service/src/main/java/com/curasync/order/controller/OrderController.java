@@ -57,7 +57,7 @@ public class OrderController {
     // Cart checkout — body shape documented in OrderService.placeOrder().
     // For paymentMethod "razorpay" the response includes a "razorpayOrder"
     // object the frontend uses to open the Razorpay checkout widget.
-    @PostMapping
+    @PostMapping("/place")
     public ResponseEntity<Map<String, Object>> placeOrder(@RequestBody Map<String, Object> req) {
         OrderService.PlaceOrderResult result = orderService.placeOrder(req);
 
