@@ -1,0 +1,36 @@
+server:
+  port: 8083
+
+spring:
+  application:
+    name: user-service
+
+  # ── Shared MongoDB Atlas cluster ─────────────────────────────────
+  # Same URI as product-service/order-service; users go into the
+  # "users" collection within the same "velia" database.
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb+srv://veliajaipurofficial_db_user:ShVSWJws21kJi4ZY@cluster0.gygaeft.mongodb.net/velia?appName=Cluster0}
+      database: velia
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  level:
+    com.curasync.user: DEBUG
+    org.springframework.data.mongodb: WARN
+
+otp:
+  expiry-minutes: 5
+  expose-in-response: true   # set false in production; wire SMS provider in OtpService

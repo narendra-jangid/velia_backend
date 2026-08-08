@@ -1,0 +1,60 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: product-service
+
+
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb+srv://veliajaipurofficial_db_user:ShVSWJws21kJi4ZY@cluster0.gygaeft.mongodb.net/velia?appName=Cluster0}
+      database: velia
+
+  # ── Multipart file upload limits ────────────────────────────────
+  # Raised from the original 10MB/50MB (image-only) to accommodate
+  # product videos — S3Service enforces the real per-type limits
+  # (10MB images / 200MB video); these are just the outer Spring cap.
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 200MB
+      max-request-size: 220MB
+
+# ── Cloudinary (superseded by S3 below for uploads — kept for now) ──
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME:dvzqub6y9}
+  api-key: ${CLOUDINARY_API_KEY:373875499722699}
+  api-secret: ${CLOUDINARY_API_SECRET:Cfd8xiFjjtJ7NGBZ7EayOo6UDvw}
+
+# ── AWS S3 (product images + video) ─────────────────────────────
+# Intentionally NO hardcoded fallback values here (unlike Cloudinary/Mongo
+# above) — these are live AWS credentials and must only ever come from real
+# environment variables, never committed to source control.
+
+aws:
+  s3:
+    access-key: ${AWS_ACCESS_KEY}
+    secret-key: ${AWS_SECRET_KEY}
+    region: ${AWS_REGION:ap-south-1}
+    bucket: ${AWS_S3_BUCKET:velia-production}
+
+
+# ── Eureka ──────────────────────────────────────────────────────
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+
+logging:
+  level:
+    com.curasync.product: DEBUG
+    org.springframework.data.mongodb: WARN

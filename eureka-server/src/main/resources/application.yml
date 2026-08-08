@@ -1,0 +1,23 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: eureka-server
+
+eureka:
+  client:
+    # This IS the registry, so it shouldn't register with itself
+    # or try to fetch the registry from another server.
+    register-with-eureka: false
+    fetch-registry: false
+  server:
+    # Disabled for local/dev to allow instant deregistration on shutdown.
+    # In production with multiple Eureka peers, set this back to true.
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 5000
+
+logging:
+  level:
+    com.netflix.eureka: ERROR
+    com.netflix.discovery: ERROR

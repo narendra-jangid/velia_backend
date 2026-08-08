@@ -1,0 +1,60 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: order-service
+
+  # ── Shared MongoDB Atlas cluster ─────────────────────────────────
+  # Same URI as product-service; orders go into the "orders" collection
+  # within the same "velia" database.
+  data:
+    mongodb:
+      uri: ${MONGODB_URI:mongodb+srv://veliajaipurofficial_db_user:ShVSWJws21kJi4ZY@cluster0.gygaeft.mongodb.net/velia?appName=Cluster0}
+      database: velia
+
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+
+# ── Razorpay ─────────────────────────────────────────────────────
+# Set these as real environment variables when running the service —
+# intentionally NOT given hardcoded fallback values here (unlike the
+# Mongo URI above) since RAZORPAY_KEY_SECRET/RAZORPAY_WEBHOOK_SECRET
+# control real money and must never be committed to source control.
+# Until they're set, Razorpay checkout is disabled server-side and
+# only Cash on Delivery is accepted (see OrderService.placeOrder).
+
+razorpay:
+  key-id: rzp_live_TNEO1GRwsCIgq4
+  key-secret: gvXUldMfTSRW15qEFRCEnX6B
+  webhook-secret:
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      product-service:
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 3
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,circuitbreakers
+
+logging:
+  level:
+    com.curasync.order: DEBUG
+    org.springframework.data.mongodb: WARN
