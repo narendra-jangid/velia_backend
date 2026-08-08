@@ -1,10 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+
     <property name="SERVICE_NAME" value="api-gateway"/>
-    <property name="LOG_DIR" value="${LOG_DIR:-/var/log/velia}"/>
+    <property name="LOG_DIR" value="/opt/velia_backend/logs"/>
 
     <property name="LOG_PATTERN"
-        value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [${SERVICE_NAME}] [%thread] %logger{36}.%M() - %msg%n"/>
+        value="%d{yyyy-MM-dd HH:mm:ss.SSS} %-5level [${SERVICE_NAME}] [%thread] %logger{36} - %msg%n"/>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
@@ -48,4 +48,5 @@
     </root>
 
     <logger name="com.curasync.gateway" level="DEBUG"/>
+
 </configuration>

@@ -15,7 +15,7 @@
     <artifactId>product-service</artifactId>
 
     <name>product-service</name>
-    <description>Velia Product Catalog – MongoDB Atlas + S3</description>
+    <description>Velia Product Catalog – MongoDB Atlas + Cloudinary</description>
 
     <dependencies>
 
@@ -44,31 +44,18 @@
             <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
         </dependency>
 
-        <!-- Cloudinary - kept for existing configuration/compatibility -->
         <dependency>
             <groupId>com.cloudinary</groupId>
             <artifactId>cloudinary-http45</artifactId>
             <version>1.39.0</version>
         </dependency>
 
-        <!-- AWS S3 -->
-        <!-- Exclude Apache HTTP client and use URLConnection instead -->
+        <!-- Uploads (images + video) now go to S3, not Cloudinary — see
+             S3Service. Cloudinary bean/config kept in place but unused;
+             see RAZORPAY_SETUP.md-style notes in the PR/summary. -->
         <dependency>
             <groupId>software.amazon.awssdk</groupId>
             <artifactId>s3</artifactId>
-            <version>2.46.18</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>software.amazon.awssdk</groupId>
-                    <artifactId>apache-client</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <!-- AWS SDK URLConnection HTTP client -->
-        <dependency>
-            <groupId>software.amazon.awssdk</groupId>
-            <artifactId>url-connection-client</artifactId>
             <version>2.46.18</version>
         </dependency>
 
